@@ -37,11 +37,6 @@ const auto infinity = real(3.4e38);
 
 using namespace std;
 
-inline auto non_zero(const real x)
-{
-	return 0 != x;
-}
-
 // Not used in the paper
 // "Accurate Differences of Products with Kahan’s Algorithm"
 // https://pharr.org/matt/blog/2019/11/03/difference-of-floats
@@ -198,7 +193,7 @@ struct ray_lines
 		eo1 = _dot(e1, origin - Pb[0]); eS1 = _dot(e1, VN[0]);
 	}
 
-	// Eq.7 Represent a ray to quadratic rational functions
+	// Eq.7 Represent a ray as quadratic rational functions
 	inline auto convert_ray_to_rational() const
 	{
 		// u(h)
@@ -448,7 +443,7 @@ inline auto intersect_plane(const ray_lines &lines, const real h, const vec2 UV[
 
 	// Using conditional numbers led to slightly poor results
 	// Solve with the most reliable one
-	if(non_zero(det0) || non_zero(det1) || non_zero(det2))
+	if((0 != det0) || (0 != det1) || (0 != det2))
 	{
 		const auto C0 = fma(lines.eS0, -h, lines.eo0);
 		const auto C1 = fma(lines.eS1, -h, lines.eo1);
