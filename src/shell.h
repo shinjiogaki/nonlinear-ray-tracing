@@ -446,7 +446,7 @@ inline auto intersect_plane(const ray_lines &lines, const real h, const vec2 UV[
 	const auto det1 = ab_minus_cd(A1, B2, B1, A2);
 	const auto det2 = ab_minus_cd(A2, B0, B2, A0);
 
-	// Using conditional numbers resulted in slightly poor results
+	// Using conditional numbers led to slightly poor results
 	// Solve with the most reliable one
 	if(non_zero(det0) || non_zero(det1) || non_zero(det2))
 	{
