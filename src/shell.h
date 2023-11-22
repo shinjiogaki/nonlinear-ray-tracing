@@ -196,12 +196,12 @@ struct ray_lines
 	// Eq.7 Represent a ray as quadratic rational functions
 	inline auto convert_ray_to_rational() const
 	{
-		// u(h)
+		// alpha(h)
 		const auto a2 = ab_minus_cd(eN1, eS1, eN3, eS0);
 		const auto a1 = ab_minus_cd(eN3, eo0, eE3, eS0) + ab_minus_cd(eE1, eS1, eN1, eo1);
 		const auto a0 = ab_minus_cd(eE3, eo0, eE1, eo1);
 		
-		// v(h)
+		// beta(h)
 		const auto b2 = ab_minus_cd(eN2, eS0, eN0, eS1);
 		const auto b1 = ab_minus_cd(eE2, eS0, eN2, eo0) + ab_minus_cd(eN0, eo1, eE0, eS1);
 		const auto b0 = ab_minus_cd(eE0, eo1, eE2, eo0);
@@ -472,9 +472,9 @@ inline auto intersect_plane(const ray_lines &lines, const real h, const vec2 UV[
 	return false;
 }
 
-// Eq.8 from Eq.7
-// const auto nu = _fma(na, E0.x, _fma(nb, E1.x, d * UV[0].x));
-// const auto nv = _fma(na, E0.y, _fma(nb, E1.y, d * UV[0].y));
+// From Eq.8
+// nu = _fma(na, E0.x, _fma(nb, E1.x, d * UV[0].x));
+// nv = _fma(na, E0.y, _fma(nb, E1.y, d * UV[0].y));
 inline auto intersect_aabb(const vec3 &origin, const vec3 &omega,
 						   const vec3 Pb[3], const vec3 VN[3], const vec2 UV[3],
 						   const vec3 &box_min, const vec3 &box_max,
@@ -484,7 +484,7 @@ inline auto intersect_aabb(const vec3 &origin, const vec3 &omega,
 						   const ray_lines &lines)
 {
 	vec2 range(infinity, -infinity);
-	
+
 	real hs[2];
 	real alpha, beta;
 	
