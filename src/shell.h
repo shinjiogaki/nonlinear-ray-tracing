@@ -294,9 +294,9 @@ inline auto intersect_plane(const vec3 &origin, const vec3 &omega, const vec3 P[
 	
 	// Gets updated only when intersected
 	param = t;
-	alpha =  _dot(c, P[2] - P[0]) / A;
-	beta  = -_dot(c, P[1] - P[0]) / A;
-	gamma =  1 - (alpha + beta);
+	alpha = _dot(c, P[2] - P[0]) / A;
+	beta  = _dot(c, P[0] - P[1]) / A;
+	gamma = 1 - (alpha + beta);
 	
 	return true;
 }
