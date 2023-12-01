@@ -705,7 +705,7 @@ inline auto intersect_microtriangle(const vec3 &origin, const vec3 &omega,
 				const auto c = _cross(n_uvh, vec3(uv.x, uv.y, h) - p0);
 				const auto u = _dot(c, p2 - p0) / A;
 				const auto v = _dot(c, p0 - p1) / A;
-				const auto w =  real(1) - (u + v);
+				const auto w = 1 - (u + v);
 
 				// epsilon is needed to render Fig.9(b)
 				if (-epsilon <= u && -epsilon <= v && -epsilon <= w)
