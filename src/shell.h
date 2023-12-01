@@ -31,7 +31,7 @@ using mat3 = glm::f32mat3;
 #endif
 
 // Constants
-const auto epsilon  = real(1.0e-7);
+const auto epsilon  = real(1.0e-6);
 const auto delta    = real(1.0e-4);
 const auto infinity = real(3.4e38);
 
