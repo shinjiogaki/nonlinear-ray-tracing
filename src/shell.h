@@ -451,7 +451,7 @@ inline auto intersect_plane(const ray_lines &lines, const real h, const vec2 UV[
 
 		auto tmp = abs(det0); auto idx = 0;
 		if  (tmp < abs(det1)) {    idx = 1; tmp = abs(det1); }
-		if  (tmp < abs(det2)) {    idx = 2; tmp = abs(det2); }
+		if  (tmp < abs(det2)) {    idx = 2; }
 		if(0 == idx)
 		{
 			alpha = ab_minus_cd(B1, C0, B0, C1) / det0;
