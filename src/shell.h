@@ -700,22 +700,15 @@ inline auto intersect_microtriangle(const vec3 &origin, const vec3 &omega,
 			{
 				// Inside microtriangle
 				const auto uv    = _fma(E1, beta, _fma(E0, alpha, UV[0]));
-				const auto uvh   = vec3(uv.x, uv.y, h);
 				const auto n_uvh = _cross(p1 - p0, p2 - p0);
-				const auto axis  = major(n_uvh);
-				const auto prev  = (axis + 2) % 3;
-				const auto next  = (axis + 1) % 3;
-				const auto prj   = vec2(uvh[prev], uvh[next]);
-				const auto prj0  = vec2(p0[prev], p0[next]) - prj;
-				const auto prj1  = vec2(p1[prev], p1[next]) - prj;
-				const auto prj2  = vec2(p2[prev], p2[next]) - prj;
-				const auto area0 = _cross(prj0, prj1);
-				const auto area1 = _cross(prj1, prj2);
-				const auto area2 = _cross(prj2, prj0);
+				const auto A = _dot(n_uvh, n_uvh);
+				const auto c = _cross(n_uvh, vec3(uv.x, uv.y, h) - p0);
+				const auto u = _dot(c, p2 - p0) / A;
+				const auto v = _dot(c, p0 - p1) / A;
+				const auto w =  real(1) - (u + v);
 
 				// epsilon is needed to render Fig.9(b)
-				if((-epsilon < area0 && -epsilon < area1 && -epsilon < area2)
-				|| (+epsilon > area0 && +epsilon > area1 && +epsilon > area2))
+				if (-epsilon <= u && -epsilon <= v && -epsilon <= w)
 				{
 					shell::vec3 S[3]; get_S(S, Pb, VN, std::clamp(h, min_h, max_h));
 					const auto world = interpolate(S, alpha, beta);
