@@ -309,15 +309,15 @@ inline auto intersect_triangle(const vec3 &origin, const vec3 &omega, const vec3
 	{
 		return false;
 	}
-	const auto A  = _dot(normal, normal);
+	const auto A = _dot(normal, normal);
 	const auto s = P[0] - origin;
 	const auto t = _dot(normal, s) / ip;
 	const auto I = _fma(omega, t, -s);
 	const auto c = _cross(normal, I);
 	
-	const auto u =  _dot(c, P[2] - P[0]) / A;
-	const auto v = -_dot(c, P[1] - P[0]) / A;
-	const auto w =  1 - (u + v);
+	const auto u = _dot(c, P[2] - P[0]) / A;
+	const auto v = _dot(c, P[0] - P[1]) / A;
+	const auto w = 1 - (u + v);
 	
 	if (0 > u || 0 > v || 0 > w)
 	{
