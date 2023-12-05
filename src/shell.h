@@ -42,24 +42,20 @@ using namespace std;
 // https://pharr.org/matt/blog/2019/11/03/difference-of-floats
 inline auto ab_minus_cd(const real a, const real b, const real c, const real d)
 {
-	/*
-	double w = d * c;
-	double e = std::fma(-d, c,  w);
-	double f = std::fma( a, b, -w);
+	const auto w = d * c;
+	const auto e = std::fma(-d, c,  w);
+	const auto f = std::fma( a, b, -w);
 	return f + e;
-	*/
-	return std::fma(a, b, - c * d);
+	//return std::fma(a, b, - c * d);
 }
 
 inline auto ab_plus_cd(const real a, const real b, const real c, const real d)
 {
-	/*
-	double w = d * c;
-	double e = std::fma(d, c, -w);
-	double f = std::fma(a, b,  w);
+	const auto w = d * c;
+	const auto e = std::fma(d, c, -w);
+	const auto f = std::fma(a, b,  w);
 	return f + e;
-	*/
-	return std::fma(a, b, c * d);
+	//return std::fma(a, b, c * d);
 }
 
 inline auto _fma(const vec2& a, const real b, const vec2& c)
@@ -84,7 +80,7 @@ inline auto _cross(const vec3& v1, const vec3& v2)
 
 inline auto _dot(const vec3& l, const vec3& r)
 {
-	return std::fma(l.x, r.x, std::fma(l.y, r.y, l.z * r.z));
+	return std::fma(l.x, r.x, ab_plus_cd(l.y, r.y, l.z, r.z));
 }
 
 inline auto _normalize(const vec3& v)
@@ -372,7 +368,7 @@ inline void intersect_cool_patch(const vec3& origin,
 	auto c = _dot(_cross(q01 - q11, omega), e10);
 	
 	b -= a + c;
-	const auto det = fma(b, b, - 4 * a * c);
+	const auto det = ab_minus_cd(b, b, 4 * a, c);
 	if (0 > det)
 	{
 		return;
@@ -671,9 +667,9 @@ inline auto intersect_microtriangle(const vec3 &origin, const vec3 &omega,
 	// Solve a cubic equation
 	real roots[3];
 	real coeffs[4] = {
-		shell::fma(n.x, nu[0], shell::fma(n.y, nv[0], K * d[0])),
-		shell::fma(n.z, d[0], shell::fma(n.x, nu[1], shell::fma(n.y, nv[1], K * d[1]))),
-		shell::fma(n.z, d[1], shell::fma(n.x, nu[2], shell::fma(n.y, nv[2], K * d[2]))),
+		                      shell::fma(n.x, nu[0], ab_plus_cd(n.y, nv[0], K, d[0])),
+		shell::fma(n.z, d[0], shell::fma(n.x, nu[1], ab_plus_cd(n.y, nv[1], K, d[1]))),
+		shell::fma(n.z, d[1], shell::fma(n.x, nu[2], ab_plus_cd(n.y, nv[2], K, d[2]))),
 		n.z * d[2]
 	};
 	min_h = std::max(min_h, std::min({p0.z, p1.z, p2.z}));
