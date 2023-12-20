@@ -396,7 +396,7 @@ inline void intersect_cool_patch(const vec3& origin,
 		auto n2 = _dot(n, n);
 		n = _cross(n, pa);
 		auto v1 = _dot(n, omega);
-		if (0 <= v1 && v1 <= n2)
+		if (in_range(v1, 0, n2))
 		{
 			update_h    (box_min, box_max, v1 / n2);
 			update_param(box_min, box_max, dot(n, pb) / n2);
@@ -411,7 +411,7 @@ inline void intersect_cool_patch(const vec3& origin,
 		auto n2 = _dot(n, n);
 		n = _cross(n, pa);
 		auto v2 = _dot(n, omega);
-		if (0 <= v2 && v2 <= n2)
+		if (in_range(v2, 0, n2))
 		{
 			update_h    (box_min, box_max, v2 / n2);
 			update_param(box_min, box_max, dot(n, pb) / n2);
