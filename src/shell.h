@@ -80,7 +80,7 @@ inline auto _cross(const vec3& v1, const vec3& v2)
 
 inline auto _dot(const vec3& l, const vec3& r)
 {
-	return std::fma(l.x, r.x, ab_plus_cd(l.y, r.y, l.z, r.z));
+	return std::fma(l.x, r.x, std::fma(l.y, r.y, l.z * r.z));
 }
 
 inline auto _normalize(const vec3& v)
@@ -692,7 +692,7 @@ inline auto intersect_microtriangle(const vec3 &origin, const vec3 &omega,
 		if(intersect_plane(lines, h, UV, n, K, alpha, beta))
 		{
 			// Inside base triangle
-			if(0 <= alpha && 0 <= beta && 0 <= 1 - alpha - beta)
+			if(0 <= alpha && 0 <= beta && alpha + beta <= 1)
 			{
 				// Inside microtriangle
 				const auto uv    = _fma(E1, beta, _fma(E0, alpha, UV[0]));
@@ -709,7 +709,7 @@ inline auto intersect_microtriangle(const vec3 &origin, const vec3 &omega,
 					shell::vec3 S[3]; get_S(S, Pb, VN, std::clamp(h, min_h, max_h));
 					const auto world = interpolate(S, alpha, beta);
 					const auto tmp   = get_signed_distance(origin, omega, world);
-					if(in_range(tmp, epsilon, param - epsilon))
+					if(in_range(tmp, real(0), param, -epsilon))
 					{
 						const auto Ns = interpolate(VN, alpha, beta);
 						const auto a  = ab_plus_cd(n.x, E0.x, n.y, E0.y);
